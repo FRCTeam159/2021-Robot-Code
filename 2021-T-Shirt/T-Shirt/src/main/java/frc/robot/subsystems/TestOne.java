@@ -13,10 +13,12 @@ import frc.robot.subsystems.SparkMotor;
 import frc.robot.OI;
 import edu.wpi.first.wpilibj.Solenoid;
 
+
+
 /** Add your docs here. */
 public class TestOne extends SubsystemBase {
-  public Solenoid fire;
-  private SparkMotor spinnyBoi;
+  //public Solenoid fire;
+  private MotorInterface spinnyBoi;
   private boolean yes = true;
   private double stick = 0.0;
   public boolean isspinning = false;
@@ -25,10 +27,11 @@ public class TestOne extends SubsystemBase {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public TestOne() {
-   spinnyBoi = new SparkMotor(RobotMap.TSHIRT_TILT_MOTOR);
-   fire = new Solenoid(RobotMap.FIRE_PISTON);
-  
+   //spinnyBoi = new SparkMotor(RobotMap.TSHIRT_TILT_MOTOR);
+   spinnyBoi = new TalonMotor(RobotMap.TSHIRT_TILT_MOTOR);
+   //fire = new Solenoid(RobotMap.FIRE_PISTON);
   }
+  
   public void spinMotor(){
  System.out.println("motor turning = " + isTurning());
 

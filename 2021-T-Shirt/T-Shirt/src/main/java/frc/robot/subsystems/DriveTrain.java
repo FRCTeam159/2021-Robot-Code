@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,10 +21,10 @@ import frc.robot.RobotContainer;
 public class DriveTrain extends SubsystemBase implements Constants {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	private SparkMotor frontLeft;
-	private SparkMotor frontRight;
-	private SparkMotor backLeft;
-	private SparkMotor backRight;
+	private MotorInterface frontLeft;
+	private MotorInterface frontRight;
+	private MotorInterface backLeft;
+	private MotorInterface backRight;
 	private static final double WHEEL_DIAMETER = 8.125; // in// 8 i-n wheels on 2019bot
 	private static final double MEASURED_FEET_PER_REV = (10.0 / 134.0);
 	private static final double LOW_GEARBOX_RATIO = 8.333;
@@ -41,11 +42,18 @@ public class DriveTrain extends SubsystemBase implements Constants {
 	private ADXRS450_Gyro gyro;
 	public boolean lowGear = false;
 
-	public DriveTrain() {
-		frontLeft = new SparkMotor(FRONT_LEFT);
-		frontRight = new SparkMotor(FRONT_RIGHT);
-		backLeft = new SparkMotor(BACK_LEFT);
-		backRight = new SparkMotor(BACK_RIGHT);
+	public DriveTrain() { 
+		if (RobotContainer.pancake) {
+			frontLeft = new SparkMotor(FRONT_LEFT);
+			frontRight = new SparkMotor(FRONT_RIGHT);
+			backLeft = new SparkMotor(BACK_LEFT);
+			backRight = new SparkMotor(BACK_RIGHT);
+		} else {
+			frontLeft = new TalonMotor(FRONT_LEFT);
+			frontRight = new TalonMotor(FRONT_RIGHT);
+			backLeft = new TalonMotor(BACK_LEFT);
+			backRight = new TalonMotor(BACK_RIGHT);
+		}
 		gyro = new ADXRS450_Gyro();
 		// if (!RobotContainer.pancake) {
 		// 	gearPneumatic = new DoubleSolenoid(Constants.GEAR_SHIFTER_FORWARD, Constants.GEAR_SHIFTER_REVERSE);
@@ -155,9 +163,9 @@ public class DriveTrain extends SubsystemBase implements Constants {
 		// SmartDashboard.putNumber("Left distance", getLeftDistance());
 		// SmartDashboard.putNumber("Right distance", getRightDistance());
 		// SmartDashboard.putNumber("Velocity", getVelocity());
-		SmartDashboard.putNumber("Revolutions", getRevolutions());
-		SmartDashboard.putNumber("Distance", getDistance());
-		SmartDashboard.putBoolean("Low Gear", inLowGear());
+		//SmartDashboard.putNumber("Revolutions", getRevolutions());
+		//SmartDashboard.putNumber("Distance", getDistance());
+		//SmartDashboard.putBoolean("Low Gear", inLowGear());
 	}
 
 	public double getHeading() {

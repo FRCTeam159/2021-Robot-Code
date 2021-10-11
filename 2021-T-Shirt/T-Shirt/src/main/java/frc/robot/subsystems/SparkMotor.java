@@ -14,7 +14,7 @@ import com.revrobotics.CANEncoder;
 /**
  * Add your docs here.
  */
-class SparkMotor extends CANSparkMax {
+class SparkMotor extends CANSparkMax implements MotorInterface {
     private CANEncoder encoder;
     private double zeroValue = 0;
 

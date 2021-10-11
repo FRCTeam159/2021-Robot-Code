@@ -24,7 +24,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   Compressor compressor;
-  public static boolean pancake = false;
+  public static boolean pancake = true;
   public static final DriveTrain driveTrain = new DriveTrain();
   private final DriveWithGamepad driveWithGamepad = new DriveWithGamepad(driveTrain);
   public static final TestOne testOne = new TestOne();
