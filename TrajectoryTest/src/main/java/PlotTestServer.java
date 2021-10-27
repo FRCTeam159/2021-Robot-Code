@@ -1,16 +1,33 @@
 // PlotTestServer (host-based network tables server)
 // Emulates a roborio (Robot) network server
 // - On startup generates a new NetworkTable table named "datatable"
-// - every 10 seconds publishes to the table an array object called NewPlot+id
+// - every 10 seconds publishes to the table an array object called Plot+id
+//   o contains plot info (id, #traces, #points)
 // - fills plot data with random points (n-traces)
+//   o each new point contains: point-id, time value, trace1-value, trace2-value ..
+//   o points are published one at a time to to a new newwork tables entry "PlotData"+point-id
 // 
 // PlotTestClient
-// - started first (before PlotTestServer is run)
+// - could be started first (before PlotTestServer is run)
 // - waits for PlotTestSever to generate "datatable" server 
-// - For every NewPlot+id that's published displays a java plotwindow that contains its data
+// - For every entry "Plot"+id that's published displays a java plotwindow that contains its data
+//   o captures each multi-trace point in display as it is received from (new) "PlotData"+index entry object
+//   o increments index after each point is processed
+//   o when index=last point, opens a PlotData window
+//
+//  Notes:
+//  1) It seems inefficient to require a new NetworkTableEntry object for each point in the plot but wpilib NeyworkTables
+//     apparantely limits array sizes to <= 256
+//     o Might be able use this advantageously by modifying plot to show new data as it arrives instead of all at once at the end
+//  2) Windows host based tests require ntcore.dll & ntcorejni to be in java.library.path on launch
+//     o build libraries natively by cloning allwpilib and running "gradlew build"
+//     o copy dlls from allwpilib build directory to a "libs" directory in project folder
+//     o add the following to configuration in launch.json:
+//     "vmArgs": [
+//       "-Djava.library.path=${workspaceFolder:TrajectoryTest}/libs"
+//		],
 
 import java.util.Random;
-
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -20,12 +37,12 @@ public class PlotTestServer {
 	static int maxDataPoints = 100;
 
 	NetworkTableEntry newPlot;
-	NetworkTableEntry traceData[];
+	NetworkTableEntry plotData;
 
 	public static void main(String[] args) {
 		new PlotTestServer().run();
 	}
-
+    
 	public void run() {
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		inst.setServer("localhost");
@@ -37,14 +54,11 @@ public class PlotTestServer {
 		int maxScore = 10;
 		double info[] = new double[3];
 		int id = 0;
-		traceData = new NetworkTableEntry[traces];
+		plotData = table.getEntry("PlotData");
 		// String lpath=System.getProperty("java.library.path");
 		// System.out.println(lpath);
 		newPlot = table.getEntry("Plot");
 
-		for (int j = 0; j < traces; j++) {
-			traceData[j] = table.getEntry("PlotData" + j);
-		}
 		inst.startServer();
 	
 		while (true) {
@@ -60,6 +74,7 @@ public class PlotTestServer {
 				System.out.println("Plot" + id);
 
 				for (int i = 0; i < maxDataPoints; i++) {
+					plotData = table.getEntry("PlotData"+i);
 					double data[] = new double[traces + 2];
 
 					data[0] = (double) i;
@@ -67,8 +82,9 @@ public class PlotTestServer {
 
 					for (int j = 0; j < traces; j++) {
 						data[j + 2] = (double) random.nextDouble() * maxScore;
-						traceData[j].setDoubleArray(data);
 					}
+					plotData.setDoubleArray(data);
+
 					tm += 0.02;
 				}
 				id++;
