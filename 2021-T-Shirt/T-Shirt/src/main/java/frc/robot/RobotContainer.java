@@ -11,6 +11,8 @@ import frc.robot.commands.DriveWithGamepad;
 import frc.robot.commands.autocommand;
 import frc.robot.subsystems.TestOne;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Axon;
+
 import frc.robot.commands.TestCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -26,6 +28,7 @@ public class RobotContainer {
   Compressor compressor;
   public static boolean pancake = false;
   public static final DriveTrain driveTrain = new DriveTrain();
+  public static final Axon axon = new Axon(0.6);
   private final DriveWithGamepad driveWithGamepad = new DriveWithGamepad(driveTrain);
   public static final TestOne testOne = new TestOne();
   private final TestCommand testCommand = new TestCommand(testOne);

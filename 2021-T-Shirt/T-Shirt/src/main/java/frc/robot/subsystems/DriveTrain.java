@@ -7,12 +7,10 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 /**
  * Add your docs here.
@@ -20,10 +18,10 @@ import frc.robot.RobotContainer;
 public class DriveTrain extends SubsystemBase implements Constants {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	private SparkMotor frontLeft;
-	private SparkMotor frontRight;
-	private SparkMotor backLeft;
-	private SparkMotor backRight;
+	private MotorInterface frontLeft;
+	private MotorInterface frontRight;
+	private MotorInterface backLeft;
+	private MotorInterface backRight;
 	private static final double WHEEL_DIAMETER = 8.125; // in// 8 i-n wheels on 2019bot
 	private static final double MEASURED_FEET_PER_REV = (10.0 / 134.0);
 	private static final double LOW_GEARBOX_RATIO = 8.333;
@@ -47,17 +45,18 @@ public class DriveTrain extends SubsystemBase implements Constants {
 		backLeft = new SparkMotor(BACK_LEFT);
 		backRight = new SparkMotor(BACK_RIGHT);
 		gyro = new ADXRS450_Gyro();
+
 		// if (!RobotContainer.pancake) {
 		// 	gearPneumatic = new DoubleSolenoid(Constants.GEAR_SHIFTER_FORWARD, Constants.GEAR_SHIFTER_REVERSE);
 		// }
-		System.out.println("Gear ratio is: " + LOW_FINAL_GEAR_RATIO);
+		//System.out.println("Gear ratio is: " + LOW_FINAL_GEAR_RATIO);
 		reset();
 	}
 
 	public void arcadeDrive(double moveValue, double turnValue) {
 		double leftMotorOutput;
 		double rightMotorOutput;
-		// System.out.println("M:"+moveValue+" T:"+turnValue);
+		//System.out.println("M:"+moveValue+" T:"+turnValue);
 
 		if (moveValue > 0.0) {
 			if (turnValue > 0.0) {
@@ -133,13 +132,11 @@ public class DriveTrain extends SubsystemBase implements Constants {
 	public double getRightDistance() {
 		double rightPosition = backRight.getRotations() + frontRight.getRotations();
 		return -INCHES_PER_REVOLUTION * rightPosition / 2;
-
 	}
 
 	public double getLeftDistance() {
 		double leftPosition = backLeft.getRotations() + frontLeft.getRotations();
 		return INCHES_PER_REVOLUTION * leftPosition / 2;
-
 	}
 
 	private double getRevolutions() {

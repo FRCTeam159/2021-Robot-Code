@@ -1,0 +1,57 @@
+Topic: Enable support for old-style (version 1.8) Pathfinder tests on windows
+Problem: pathfinder mavon archive no longer available on website 
+ - Removed by Jaci Brunning 4/2020 (see https://www.chiefdelphi.com/t/important-changes-to-pathfinder-hosting/383357)
+ - so builds fail because java source and JNI libraries can't be downloaded
+Fix: Obtain Java code and libraries from other sources and build tests using local files
+Get the files:
+1) Clone the old Pathfinder github project (https://github.com/JaciBrunning/Pathfinder)
+  - git clone https://github.com/JaciBrunning/Pathfinder)
+  - note: sources also available from archive tar bundle obtained by following first link above (look in 1.8 directories) 
+    but windows library pathfinderjava.dll doesn't seem to be present 
+    - get linker error when running code that uses pathfinder.dll and pathfinderjni.l=dll
+    - probably old test code needs to be modified to use newer 1.9 pathfinder syntax (TODO: look into this)
+2) build Pathfinder on windows (note requires Java 8 vs 11)
+  - gradlew build
+3) Copy source, class and library files from Pathfinder build directory into test project
+ - create directory "libs" in test project root directory 
+ - from Pathfinder/Pathfinder-java/libs copy the following into libs
+   Pathfinder-Java-1.8.jar
+   Pathfinder-Java-1.8-sources.jar
+ - from Pathfinder/Pathfinder-java/libs/shared/any64 copy
+   pathfinderjava.dll
+ 4) the expanded sources 
+ -  jaci/
+    jaci/pathfinder/
+    jaci/pathfinder/followers/
+    jaci/pathfinder/followers/DistanceFollower.java
+    jaci/pathfinder/followers/EncoderFollower.java
+    jaci/pathfinder/modifiers/
+    jaci/pathfinder/modifiers/SwerveModifier.java
+    jaci/pathfinder/modifiers/TankModifier.java
+    jaci/pathfinder/Pathfinder.java
+    jaci/pathfinder/PathfinderJNI.java
+    jaci/pathfinder/Trajectory.java
+    jaci/pathfinder/Waypoint.java
+5) modifiy build.gradle in test project to use Pathfinder libraries
+ - add the following to dependencies section:
+   implementation files('libs/Pathfinder-Java-1.8.jar')
+6) create a configuration section to run test program
+  {
+      "type": "java",
+      "name": "CodeLens (Launch) - TrajectoryTest",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PathPlotTest",
+      "vmArgs": [
+        "-Djava.library.path=${workspaceFolder:TrajectoryTest}/libs"
+      ],
+      "projectName": "TrajectoryTest"
+    },
+7) run the test program using "run and debug" icon in leftmost panel of vscode
+ - select CodeLens (Launch) Trajectory Test (TarjectoryTest)
+ - press gree arrow
+ - should see plot window showing 3 traces
+
+
