@@ -7,6 +7,11 @@
 
 package frc.robot.subsystems;
 
+<<<<<<< HEAD
+=======
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+>>>>>>> 586742c65945a4119ef358983a9750a39a53b393
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,11 +44,18 @@ public class DriveTrain extends SubsystemBase implements Constants {
 	private ADXRS450_Gyro gyro;
 	public boolean lowGear = false;
 
-	public DriveTrain() {
-		frontLeft = new SparkMotor(FRONT_LEFT);
-		frontRight = new SparkMotor(FRONT_RIGHT);
-		backLeft = new SparkMotor(BACK_LEFT);
-		backRight = new SparkMotor(BACK_RIGHT);
+	public DriveTrain() { 
+		if (RobotContainer.pancake) {
+			frontLeft = new SparkMotor(FRONT_LEFT);
+			frontRight = new SparkMotor(FRONT_RIGHT);
+			backLeft = new SparkMotor(BACK_LEFT);
+			backRight = new SparkMotor(BACK_RIGHT);
+		} else {
+			frontLeft = new TalonMotor(FRONT_LEFT);
+			frontRight = new TalonMotor(FRONT_RIGHT);
+			backLeft = new TalonMotor(BACK_LEFT);
+			backRight = new TalonMotor(BACK_RIGHT);
+		}
 		gyro = new ADXRS450_Gyro();
 
 		// if (!RobotContainer.pancake) {
@@ -152,9 +164,9 @@ public class DriveTrain extends SubsystemBase implements Constants {
 		// SmartDashboard.putNumber("Left distance", getLeftDistance());
 		// SmartDashboard.putNumber("Right distance", getRightDistance());
 		// SmartDashboard.putNumber("Velocity", getVelocity());
-		SmartDashboard.putNumber("Revolutions", getRevolutions());
-		SmartDashboard.putNumber("Distance", getDistance());
-		SmartDashboard.putBoolean("Low Gear", inLowGear());
+		//SmartDashboard.putNumber("Revolutions", getRevolutions());
+		//SmartDashboard.putNumber("Distance", getDistance());
+		//SmartDashboard.putBoolean("Low Gear", inLowGear());
 	}
 
 	public double getHeading() {

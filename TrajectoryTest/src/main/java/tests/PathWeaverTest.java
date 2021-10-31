@@ -28,7 +28,7 @@ public class PathWeaverTest {
 
     private static final boolean plotCalculatedTrajectory = true;
     private static final boolean plotCalculatedPath = true;
-    public static boolean usePathWeaverPath = false;
+    public static boolean usePathWeaverPath = true;
 
     Trajectory trajectory = null;
     double chassis_width = 0.5;

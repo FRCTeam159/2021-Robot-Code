@@ -14,9 +14,15 @@ import frc.robot.OI;
 import edu.wpi.first.wpilibj.Solenoid;
 //import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+
+
 /** Add your docs here. */
 public class TestOne extends SubsystemBase {
+<<<<<<< HEAD
   public Solenoid fire;
+=======
+  //public Solenoid fire;
+>>>>>>> 586742c65945a4119ef358983a9750a39a53b393
   private MotorInterface spinnyBoi;
   private boolean yes = true;
   private double stick = 0.0;
@@ -26,10 +32,17 @@ public class TestOne extends SubsystemBase {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public TestOne() {
+<<<<<<< HEAD
    spinnyBoi = new WPITalonMotor(RobotMap.TSHIRT_TILT_MOTOR);
    fire = new Solenoid(RobotMap.FIRE_PISTON);
   
+=======
+   //spinnyBoi = new SparkMotor(RobotMap.TSHIRT_TILT_MOTOR);
+   spinnyBoi = new TalonMotor(RobotMap.TSHIRT_TILT_MOTOR);
+   //fire = new Solenoid(RobotMap.FIRE_PISTON);
+>>>>>>> 586742c65945a4119ef358983a9750a39a53b393
   }
+  
   public void spinMotor(){
  System.out.println("motor turning = " + isTurning());
 
