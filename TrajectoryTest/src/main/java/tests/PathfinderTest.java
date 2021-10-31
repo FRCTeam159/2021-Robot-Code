@@ -1,3 +1,4 @@
+package tests;
 
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -8,8 +9,10 @@ import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.modifiers.TankModifier;
+import utils.PathData;
+import utils.PlotPath;
 
-public class PathPlotTest {
+public class PathfinderTest {
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     public static final int CENTER = 2;
@@ -21,7 +24,7 @@ public class PathPlotTest {
     int robotSide = LEFT;
     int pathTest = H_TURN;
 
-    private static final boolean printCalculatedTrajectory = true;
+    private static final boolean printCalculatedTrajectory = false;
     private static final boolean plotCalculatedTrajectory = true;
     private static final boolean printCalculatedPath = false;
     private static final boolean plotCalculatedPath = true;
@@ -62,12 +65,12 @@ public class PathPlotTest {
     }
 
     private static void createAndShowGui() {
-        PathPlotTest test = new PathPlotTest();
+        PathfinderTest test = new PathfinderTest();
         test.showPathDynamics();
         test.showPathMotion();
     }
 
-    public PathPlotTest() {
+    public PathfinderTest() {
         trajectory = calculateTrajectory(distance, offset, MAX_VEL, MAX_ACC, MAX_JRK);
         TankModifier modifier = new TankModifier(trajectory);
         modifier.modify(wheelbase);
@@ -110,7 +113,8 @@ public class PathPlotTest {
             }
         }
         if (plotCalculatedPath) {
-            JFrame frame = new PlotPath(data, 3, PlotPath.XY_MODE);
+            String list[]={"Left","Center","Right"};
+            JFrame frame = new PlotPath(data, 3, PlotPath.XY_MODE,list);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
@@ -150,7 +154,8 @@ public class PathPlotTest {
             last_heading = heading;
         }
         if (plotCalculatedTrajectory) {
-            JFrame frame = new PlotPath(data, 5);
+            String list[]={"X","Y","Velocity","Acceleration","Heading"};
+            JFrame frame = new PlotPath(data, 5,PlotPath.TIME_MODE,list);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
@@ -166,10 +171,6 @@ public class PathPlotTest {
 
     private static double inchesToMeters(double inches) {
         return inches * 0.0254;
-    }
-
-    private static double metersToInches(double meters) {
-        return meters / 0.0254;
     }
 
     private static double feetToMeters(double feet) {

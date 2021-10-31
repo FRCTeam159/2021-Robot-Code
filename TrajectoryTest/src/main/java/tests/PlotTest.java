@@ -1,8 +1,12 @@
+package tests;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import utils.PathData;
+import utils.PlotPath;
 
 public class PlotTest {
 	private static void createAndShowGui() {

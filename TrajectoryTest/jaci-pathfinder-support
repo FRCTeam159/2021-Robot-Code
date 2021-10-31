@@ -38,12 +38,12 @@ Get the files:
 6) create a configuration section to run test program
   {
       "type": "java",
-      "name": "CodeLens (Launch) - TrajectoryTest",
+      "name": "CodeLens (Launch) - PathfinderTest",
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "stopOnEntry": false,
-      "mainClass": "PathPlotTest",
+      "mainClass": "tests.PathfinderTest",
       "vmArgs": [
         "-Djava.library.path=${workspaceFolder:TrajectoryTest}/libs"
       ],
@@ -51,7 +51,7 @@ Get the files:
     },
 7) run the test program using "run and debug" icon in leftmost panel of vscode
  - select CodeLens (Launch) Trajectory Test (TarjectoryTest)
- - press gree arrow
+ - press green arrow
  - should see plot window showing 3 traces
 
 

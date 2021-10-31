@@ -6,33 +6,43 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch PathWeaverTest",
+      "request": "launch",
+      "mainClass": "tests.PathWeaverTest",
+      "projectName": "TrajectoryTest",
+      "env": {
+        "PATH": "$PATH:${workspaceFolder:TrajectoryTest}/build/jni/debug" 
+      },
+    },
+    {
+      "type": "java",
       "name": "Launch PlotTestClient",
       "request": "launch",
-      "mainClass": "PlotTestClient",
-      "vmArgs": [
-        "-Djava.library.path=${workspaceFolder:TrajectoryTest}/libs"
-      ],
+      "mainClass": "tests.PlotTestClient",
+      "env": {
+        "PATH": "$PATH:${workspaceFolder:TrajectoryTest}/build/jni/debug" 
+      },
       "projectName": "TrajectoryTest"
     },
     {
       "type": "java",
       "name": "Launch PlotTestServer",
       "request": "launch",
-      "mainClass": "PlotTestServer",
-      "vmArgs": [
-        "-Djava.library.path=${workspaceFolder:TrajectoryTest}/libs"
-      ],
+      "mainClass": "tests.PlotTestServer",
+      "env": {
+        "PATH": "$PATH:${workspaceFolder:TrajectoryTest}/build/jni/debug" 
+      },
       "projectName": "TrajectoryTest",
       "desktop": true
     },
     {
       "type": "java",
-      "name": "CodeLens (Launch) - TrajectoryTest",
+      "name": "CodeLens (Launch) - Pathfinder",
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "stopOnEntry": false,
-      "mainClass": "PathPlotTest",
+      "mainClass": "tests.Pathfinder",
       "vmArgs": [
         "-Djava.library.path=${workspaceFolder:TrajectoryTest}/libs"
       ],
@@ -43,7 +53,7 @@
       "type": "java",
       "name": "Launch PlotTest",
       "request": "launch",
-      "mainClass": "PlotTest",
+      "mainClass": "tests.PlotTest",
       "projectName": "TrajectoryTest"
     },
     {

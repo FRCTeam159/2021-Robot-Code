@@ -1,3 +1,4 @@
+package utils;
 
 
 import java.awt.BorderLayout;
@@ -24,16 +25,22 @@ public class PlotPath extends JFrame {
 	protected ArrayList<PathData> list = new ArrayList<>();
 	private static final int PREF_W = 800;
 	private static final int PREF_H = 650;
+	private static final int MIN_H = 400;
+	private static final int MAX_H = 800;
 	protected double tmax=0;
 	protected double ymin=1000;
 	protected double ymax=-1000;
 	protected double xmin=1000;
 	protected double xmax=-1000;
+	protected double aspect=1;
+	protected int plot_width=PREF_W;
+	protected int plot_height=PREF_H;
 	protected int traces;
 	public static final int TIME_MODE=0;
 	public static final int XY_MODE=1;
 
 	private int plotMode=TIME_MODE;
+	private String labels[]=null;
 
 	static public Color colors[]= {
 			Color.BLUE,Color.RED,Color.GREEN,Color.ORANGE,Color.DARK_GRAY,Color.GRAY};
@@ -42,13 +49,18 @@ public class PlotPath extends JFrame {
 		this(d,n,TIME_MODE);
 	}
 	public PlotPath(ArrayList<PathData> d, int n, int m) {
+		this(d,n,m,null);
+	}
+	public PlotPath(ArrayList<PathData> d, int n, int m, String[] l) {
+		labels=l;
 		plotMode=m;
 		list.addAll(d);
 		traces=n;
-		setSize(PREF_W, PREF_H);
+		getLimits();
+
+		setSize(plot_width, plot_height);
 		setTitle("Path Plot");
 		setLocationRelativeTo(null);
-		getLimits();
 		add(new DrawPlot(), BorderLayout.CENTER);
 		pack();
 		setVisible(true);
@@ -69,8 +81,23 @@ public class PlotPath extends JFrame {
 		if(plotMode==TIME_MODE){
 			xmax=tmax;
 			xmin=0;
+		}
+		else{
+			double dx=xmax-xmin;
+			double dy=ymax-ymin;
+			aspect=dx/dy;
+			plot_width=(int)(PREF_W);
+			plot_height=(int)(PREF_H/aspect);
+			if(aspect>1 && plot_height<MIN_H){
+				plot_height=MIN_H;
+				plot_width=(int)(plot_height*aspect);
+			}
+			else if (aspect<1 && plot_height>MAX_H){
+				plot_height=MAX_H;
+				plot_width=(int)(plot_height*aspect);
+			}
 		}	
-		System.out.println("PlotPath: xmax="+xmax+" xmin="+xmin+" ymax="+ymax+" ymin="+ymin);
+		System.out.println("PlotPath: xmax="+xmax+" xmin="+xmin+" ymax="+ymax+" ymin="+ymin+" aspect:"+aspect);
 	}
 	class DrawPlot extends JPanel {
 		/**
@@ -84,13 +111,14 @@ public class PlotPath extends JFrame {
 		private int numberYDivisions = 10;
 		private int numberXDivisions = 10;
 
+		private Stroke LINE_STROKE = new BasicStroke(1f);
 		private Stroke GRAPH_STROKE = new BasicStroke(2f);
 		private Stroke DASHED = new BasicStroke(3f, BasicStroke.CAP_ROUND,
 		        BasicStroke.JOIN_ROUND, 3.0f, new float[]{5,5}, 0.0f);
 
 		
 		public DrawPlot() {
-			setPreferredSize(new Dimension(800, 600));
+			setPreferredSize(new Dimension(plot_width, plot_height));
 		}
 
 	    protected void paintComponent(Graphics g) {
@@ -173,9 +201,7 @@ public class PlotPath extends JFrame {
 			if(plotMode==XY_MODE)
 				 xAxisLabel="X";
 			int x0 =  (getWidth() - padding * 2 - labelPadding) / 2 + padding + labelPadding;
-			int x1 = x0;
 			int y0 = getHeight() - labelPadding;
-			int y1 = y0 - pointWidth;
 			FontMetrics metrics = g2.getFontMetrics();
 			int labelWidth = metrics.stringWidth(xAxisLabel);
 
@@ -210,6 +236,40 @@ public class PlotPath extends JFrame {
 					else
 						g2.setStroke(DASHED);
 					g2.drawPolyline(xs, ys, list.size());
+				}
+			}
+			// draw optional legend
+			if(labels != null){
+				int legend_line_length = 50;
+				int legend_width =0;
+				int spacing=metrics.getHeight()+5;
+				int legend_height=labels.length*(spacing);
+				for (int i=0;i<labels.length;i++){
+					labelWidth = metrics.stringWidth(labels[i]);
+					legend_width=labelWidth>legend_width?labelWidth:legend_width;
+				}
+				legend_width+=legend_line_length+30;
+				int top = padding+20;
+				int left = padding + labelPadding+10;
+				g2.setStroke(LINE_STROKE);
+				g2.setColor(Color.WHITE);
+				g2.fillRect(left, top, legend_width, legend_height);
+				g2.setColor(Color.BLACK);
+
+				g2.drawRect(left, top, legend_width, legend_height);
+				left+=10;
+				top+=10;
+				for (int j=0;j<labels.length;j++){
+					g2.setColor(colors[j]);
+					if ((j % 2) == 0)
+						g2.setStroke(GRAPH_STROKE);
+					else
+						g2.setStroke(DASHED);
+					g2.drawLine(left,top,left+legend_line_length,top);
+					g2.setColor(Color.BLACK);
+					g2.setStroke(LINE_STROKE);
+					g2.drawString(labels[j], left+legend_line_length+10, top+5);
+					top+=spacing;
 				}
 			}
 		    g2.dispose();

@@ -1,3 +1,4 @@
+package tests;
 // PlotTestClient
 // plots data sent by a NetworkTable server
 // - On startup looks at optional "ip" argument (set in launch.json)
@@ -24,6 +25,8 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.EntryNotification;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import utils.PathData;
+import utils.PlotPath;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class PlotTestClient implements Consumer<EntryNotification>, EntryListenerFlags {

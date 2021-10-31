@@ -1,7 +1,8 @@
+package tests;
 // PlotTestServer (host-based network tables server)
 // Emulates a roborio (Robot) network server
 // - On startup generates a new NetworkTable table named "datatable"
-// - every 10 seconds publishes to the table an array object called Plot+id
+// - every 10 seconds publishes to the table an array object called "Plot"
 //   o contains plot info (id, #traces, #points)
 // - fills plot data with random points (n-traces)
 //   o each new point contains: point-id, time value, trace1-value, trace2-value ..
@@ -10,8 +11,8 @@
 // PlotTestClient
 // - could be started first (before PlotTestServer is run)
 // - waits for PlotTestSever to generate "datatable" server 
-// - For every entry "Plot"+id that's published displays a java plotwindow that contains its data
-//   o captures each multi-trace point in display as it is received from (new) "PlotData"+index entry object
+// - For every entry "Plot" that's published displays a java plotwindow that contains its data
+//   o captures each multi-trace point as it is received from (new) "PlotData"+index entry object
 //   o increments index after each point is processed
 //   o when index=last point, opens a PlotData window
 //
@@ -20,12 +21,16 @@
 //     apparantely limits array sizes to <= 256
 //     o Might be able use this advantageously by modifying plot to show new data as it arrives instead of all at once at the end
 //  2) Windows host based tests require ntcore.dll & ntcorejni to be in java.library.path on launch
-//     o build libraries natively by cloning allwpilib and running "gradlew build"
-//     o copy dlls from allwpilib build directory to a "libs" directory in project folder
-//     o add the following to configuration in launch.json:
-//     "vmArgs": [
-//       "-Djava.library.path=${workspaceFolder:TrajectoryTest}/libs"
-//		],
+//     o original configuration in launch.json produced linker errors
+//     o fixed by building ntcore from allwpilib github repo (gradlew build), copying dlls to ~/libs and adding to configuration:
+//       with: "vmArgs": [
+//        "-Djava.library.path=${workspaceFolder:TrajectoryTest}/libs"
+//		 ],
+//     o Alternatively, just added the following to configuration in launch.json:
+//      "env": {
+//	        "PATH": "$PATH:${workspaceFolder:TrajectoryTest}/build/jni/debug" 
+//       },
+//     o might need to first run "simulate on desktop" so that build contains native libraries (?)
 
 import java.util.Random;
 
