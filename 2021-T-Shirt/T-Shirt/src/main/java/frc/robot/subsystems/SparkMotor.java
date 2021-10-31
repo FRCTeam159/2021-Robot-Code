@@ -14,11 +14,7 @@ import com.revrobotics.CANEncoder;
 /**
  * Add your docs here.
  */
-<<<<<<< HEAD
-class SparkMotor extends CANSparkMax  implements MotorInterface  {
-=======
 class SparkMotor extends CANSparkMax implements MotorInterface {
->>>>>>> 586742c65945a4119ef358983a9750a39a53b393
     private CANEncoder encoder;
     private double zeroValue = 0;
 
@@ -32,11 +28,7 @@ class SparkMotor extends CANSparkMax implements MotorInterface {
         double position = encoder.getPosition();
         return (position - zeroValue);
     }
-    
-    public void set(double v){
-        super.set(v);
-    }
-    
+
     public void reset() {
         zeroValue = encoder.getPosition();
     }
