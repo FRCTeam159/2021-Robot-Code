@@ -20,14 +20,13 @@ import java.util.function.Consumer;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import edu.wpi.first.networktables.ConnectionNotification;
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.EntryNotification;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import utils.PathData;
 import utils.PlotPath;
-import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class PlotTestClient implements Consumer<EntryNotification>, EntryListenerFlags {
 	ArrayList<PathData> list = new ArrayList<PathData>();

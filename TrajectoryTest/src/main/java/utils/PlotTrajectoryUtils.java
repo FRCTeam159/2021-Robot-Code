@@ -16,7 +16,7 @@ public class PlotTrajectoryUtils {
     private static final boolean printCalculatedTrajectory = false;
     private static final boolean printCalculatedPath = false;
     static ArrayList<PathData> data = new ArrayList<>();
-
+    
     public static void plotPathMotion(List<Trajectory.State> list, double chassis_width) {
         data.clear();
         for (int i = 0; i < list.size(); i++) {
@@ -48,7 +48,7 @@ public class PlotTrajectoryUtils {
         }
         String label_list[] = { "Left", "Center", "Right" };
         JFrame frame = new PlotPath(data, 3, PlotPath.XY_MODE, label_list);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -77,7 +77,7 @@ public class PlotTrajectoryUtils {
         }
         String label_list[] = { "X", "Y", "Velocity", "Acceleration", "Heading" };
         JFrame frame = new PlotPath(data, 5, PlotPath.TIME_MODE, label_list);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

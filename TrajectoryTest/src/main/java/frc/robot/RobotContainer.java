@@ -4,14 +4,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.DriveWithGamepad;
-import frc.robot.commands.autocommand;
-import frc.robot.subsystems.TestOne;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.commands.TestCommand;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -22,18 +18,13 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final SimDriveTrain m_drive =new SimDriveTrain();
+  private final DrivePath m_autoCommand = new DrivePath(m_drive);
 
-  Compressor compressor;
-  public static boolean pancake = true;
-  public static final DriveTrain driveTrain = new DriveTrain();
-  private final DriveWithGamepad driveWithGamepad = new DriveWithGamepad(driveTrain);
-  public static final TestOne testOne = new TestOne();
-  private final TestCommand testCommand = new TestCommand(testOne);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    m_drive.setDefaultCommand(new DriveWithGamepad(m_drive));
     // Configure the button bindings
-    driveTrain.setDefaultCommand(driveWithGamepad);
-    testOne.setDefaultCommand(testCommand);
     configureButtonBindings();
   }
 
@@ -52,6 +43,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-   return new autocommand();
+    return m_autoCommand;
   }
 }

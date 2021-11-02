@@ -21,10 +21,10 @@ import utils.PlotTrajectoryUtils;
 /** Add your docs here. */
 public class PathWeaverTest {
     // String trajectoryJSON = "paths/left-scale-from-right.wpilib.json";
-    String trajectoryJSON = "paths/right-switch-from-right.wpilib.json";
+    ///String trajectoryJSON = "paths/right-switch-from-right.wpilib.json";
 
     // String trajectoryJSON = "paths/right-switch-from-left.wpilib.json";
-     //String trajectoryJSON = "paths/wierd-path.wpilib.json";
+     String trajectoryJSON = "paths/wierd-path.wpilib.json";
 
     private static final boolean plotCalculatedTrajectory = true;
     private static final boolean plotCalculatedPath = true;
@@ -32,8 +32,8 @@ public class PathWeaverTest {
 
     Trajectory trajectory = null;
     double chassis_width = 0.5;
-    public static double MAX_VEL = 1.5;
-    public static double MAX_ACC = 3;
+    public static double MAX_VEL = 2;
+    public static double MAX_ACC = 5;
 
     double distance = feetToMeters(10); // forward distance
     double offset = feetToMeters(3); // turn distance
